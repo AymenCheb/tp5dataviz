@@ -6,6 +6,11 @@
  */
 export function colorDomain (color, data) {
   // Set the color domain
+  const features = data.features
+  const types = Array.from(new Set(features.map(entry => entry.properties.TYPE_SITE_INTERVENTION)))
+  types.sort((a, b) => a.localeCompare(b))
+  color.domain(types)
+    .range(d3.schemeSet1)
 }
 
 /**
@@ -17,6 +22,16 @@ export function colorDomain (color, data) {
  */
 export function mapBackground (data, path, showMapLabel) {
   // TODO : Generate the map background and set the hover handlers
+  const features = data.features
+  const svg = d3.select('#main-svg')
+  svg.selectAll('path')
+    .data(features)
+    .enter()
+    .append('path')
+    .attr('d', path)
+    .attr('class', 'map-background')
+    .on('mouseover', showMapLabel)
+    .on('mouseout', showMapLabel)
 }
 
 /**
