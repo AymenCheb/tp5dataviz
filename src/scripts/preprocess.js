@@ -33,7 +33,8 @@ export function convertCoordinates (data, projection) {
   const features = data.features
   const results = []
   features.forEach(entry => {
-    const result = { type: entry.type, properties: entry.properties, geometry: entry.geometry, x: entry.LONGITUDE, y: entry.LATITUDE}
+    const coordinates = projection(entry.geometry.coordinates)
+    const result = { ...entry, x: coordinates[0], y: coordinates[1] }
     results.push(result)
   })
   data.features = results
