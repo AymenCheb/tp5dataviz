@@ -10,7 +10,6 @@ export function colorDomain (color, data) {
   const types = Array.from(new Set(features.map(entry => entry.properties.TYPE_SITE_INTERVENTION)))
   types.sort((a, b) => a.localeCompare(b))
   color.domain(types)
-    .range(d3.schemeSet1)
 }
 
 /**
@@ -23,15 +22,17 @@ export function colorDomain (color, data) {
 export function mapBackground (data, path, showMapLabel) {
   // TODO : Generate the map background and set the hover handlers
   const features = data.features
-  const svg = d3.select('#main-svg')
-  svg.selectAll('path')
+  const map = d3.select('#map-g')
+
+  map.selectAll('path')
     .data(features)
     .enter()
     .append('path')
     .attr('d', path)
-    .attr('class', 'map-background')
-    .on('mouseover', showMapLabel)
-    .on('mouseout', showMapLabel)
+    .attr('fill', 'white')
+    .attr('stroke', '#a7a7a0')
+    .on('mouseover', (event, d) => showMapLabel(d, path))
+    .on('mouseout', () => d3.selectAll('.label').remove())
 }
 
 /**
@@ -45,6 +46,17 @@ export function mapBackground (data, path, showMapLabel) {
 export function showMapLabel (d, path) {
   // TODO : Show the map label at the center of the neighborhood
   // by calculating the centroid for its polygon
+  const map = d3.select('#map-g')
+  const centroid = path.centroid(d)
+
+  map.append('text')
+    .attr('class', 'label')
+    .attr('x', centroid[0])
+    .attr('y', centroid[1])
+    .attr('text-anchor', 'middle')
+    .attr('font-size', 10)
+    .attr('font-family', 'Oswald')
+    .text(d.properties.NOM)
 }
 
 /**
@@ -59,4 +71,22 @@ export function mapMarkers (data, color, panel) {
   // Their color corresponds to the type of site and their outline is white.
   // Their radius is 5 and goes up to 6 while hovered by the cursor.
   // When clicked, the panel is displayed.
+  const features = data.features
+  const markers = d3.select('#marker-g')
+
+  markers.selectAll('circle')
+    .data(features)
+    .enter()
+    .append('circle')
+    .attr('class', 'marker')
+    .attr('fill', d => color(d.properties.TYPE_SITE_INTERVENTION))
+    .attr('stroke', 'white')
+    .attr('r', 5)
+    .on('mouseover', function () {
+      d3.select(this).attr('r', 6)
+    })
+    .on('mouseout', function () {
+      d3.select(this).attr('r', 5)
+    })
+    .on('click', () => panel.display())
 }

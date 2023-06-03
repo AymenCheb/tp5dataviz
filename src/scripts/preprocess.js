@@ -66,8 +66,8 @@ export function reverseGeoJsonCoordinates (data) {
   const reversedData = features.map(entry => {
     return {
       ...entry,
-      geometry: rewind(entry.geometry)
+      geometry: rewind(entry.geometry, { reverse: true })
     }
   })
-  return reversedData
+  return { ...data, features: reversedData }
 }
