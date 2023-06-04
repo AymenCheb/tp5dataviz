@@ -88,5 +88,5 @@ export function mapMarkers (data, color, panel) {
     .on('mouseout', function () {
       d3.select(this).attr('r', 5)
     })
-    .on('click', () => panel.display())
+    .on('click', (d) => panel.display(d.target.__data__, color(d.target.__data__.properties.TYPE_SITE_INTERVENTION)))
 }

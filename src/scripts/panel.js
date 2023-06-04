@@ -56,6 +56,9 @@ export function display (d, color) {
  */
 function setTitle (g, d, color) {
   // TODO : Set the title
+  g.append('text')
+    .text(d.properties.NOM_PROJET)
+    .style('color', color)
 }
 
 /**
@@ -66,6 +69,8 @@ function setTitle (g, d, color) {
  */
 function setMode (g, d) {
   // TODO : Set the mode
+  g.append('text')
+    .text(d.properties.MODE_IMPLANTATION)
 }
 
 /**
@@ -77,4 +82,6 @@ function setMode (g, d) {
  */
 function setTheme (g, d) {
   // TODO : Append a list element representing the given theme
+  g.append('li')
+    .text(d)
 }
