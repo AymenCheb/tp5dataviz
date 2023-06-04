@@ -10,11 +10,11 @@ export function drawLegend (colorScale, g) {
   // TODO : Generate the legend
   // For help, see : https://d3-legend.susielu.com/
   const sortedLabels = colorScale.domain().sort((a, b) => a.localeCompare(b))
-  g.append('g').attr('class', 'legend').attr('transform', `translate(50, 120)`)
+  g.append('g').attr('class', 'legend').attr('transform', 'translate(50, 120)')
   const legend = d3Legend.legendColor()
     .shape('circle')
     .labels(sortedLabels)
-    .title('Legend')
+    .title('Légende')
     .scale(colorScale)
   g.select('.legend').call(legend)
 }

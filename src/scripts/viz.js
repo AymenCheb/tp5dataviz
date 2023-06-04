@@ -23,16 +23,15 @@ export function mapBackground (data, path, showMapLabel) {
   // TODO : Generate the map background and set the hover handlers
   const features = data.features
   const map = d3.select('#map-g')
-
   map.selectAll('path')
     .data(features)
     .enter()
     .append('path')
-    .attr('d', path)
+    .attr('d', (d) => path(d))
     .attr('fill', 'white')
     .attr('stroke', '#a7a7a0')
     .on('mouseover', (event, d) => showMapLabel(d, path))
-    .on('mouseout', () => d3.selectAll('.label').remove())
+    .on('mouseout', () => d3.selectAll('.label-map').remove())
 }
 
 /**
@@ -50,7 +49,7 @@ export function showMapLabel (d, path) {
   const centroid = path.centroid(d)
 
   map.append('text')
-    .attr('class', 'label')
+    .attr('class', 'label-map')
     .attr('x', centroid[0])
     .attr('y', centroid[1])
     .attr('text-anchor', 'middle')
