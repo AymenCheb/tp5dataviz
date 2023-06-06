@@ -17,4 +17,8 @@ export function drawLegend (colorScale, g) {
     .title('Légende')
     .scale(colorScale)
   g.select('.legend').call(legend)
+
+  g.selectAll('.legend text')
+    .style('font-family', 'Open Sans Condensed')
+    .style('font-size', '17px')
 }
